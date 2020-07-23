@@ -16,12 +16,12 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 32),
-      child: BlocProvider(
-        create: (_) => HomeBloc(repository: repository),
-        child: Scaffold(
-          body: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+    return Scaffold(
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 32),
+        child: BlocProvider(
+          create: (_) => HomeBloc(repository: repository),
+          child: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
             if (state is Loading) {
               return Center(
                 child: CircularProgressIndicator(),
