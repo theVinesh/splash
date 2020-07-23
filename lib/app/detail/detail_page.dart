@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:splash/app/model/photo_model.dart';
+import 'package:splash/app/util/color_extensions.dart';
 
 class DetailPage extends StatefulWidget {
   final PhotoModel photo;
@@ -33,7 +34,7 @@ class _DetailPageState extends State<DetailPage> {
           child: Center(
             child: Hero(
               tag: photo.id,
-              child: _photoWidget(photo),
+              child: _buildPhotoWidget(photo),
             ),
           ),
         ),
@@ -41,10 +42,28 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 
-  Widget _photoWidget(PhotoModel photo) {
-    return AspectRatio(
-      aspectRatio: photo.width / photo.height,
-      child: Image.network(photo.url),
+  Widget _buildPhotoWidget(PhotoModel photo) {
+    return Container(
+      color: HexColor.fromHex(photo.colorCode),
+      child: AspectRatio(
+        aspectRatio: photo.width / photo.height,
+        child: Image.network(
+          photo.url,
+          semanticLabel: photo.description,
+          loadingBuilder: (BuildContext context, Widget child,
+              ImageChunkEvent loadingProgress) {
+            if (loadingProgress == null) return child;
+            return Center(
+              child: CircularProgressIndicator(
+                value: loadingProgress.expectedTotalBytes != null
+                    ? loadingProgress.cumulativeBytesLoaded /
+                        loadingProgress.expectedTotalBytes
+                    : null,
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 

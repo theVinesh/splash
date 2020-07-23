@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
+@immutable
 class PhotoModel extends Equatable {
   final String id;
   final int width;
