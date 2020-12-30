@@ -8,7 +8,7 @@ import 'model/photo_model.dart';
 
 class UnsplashApiClient {
   final _baseUrl = 'api.unsplash.com';
-  final _clientId = 'Owz54zcaT46pSKQ7_3FzkDhY48a5U-Puy_uoj4K7__o';
+  final _clientId = const String.fromEnvironment('CLIENT_ID');
   final http.Client httpClient;
 
   UnsplashApiClient({
@@ -16,6 +16,7 @@ class UnsplashApiClient {
   }) : assert(httpClient != null);
 
   Future<List<PhotoModel>> fetchPhotos({int count = 10, String query}) async {
+    final headers = {HttpHeaders.authorizationHeader: 'Client-ID $_clientId'};
     final params = {'count': '$count', 'query': query, 'featured': 'true'};
     params.removeWhere((key, value) => value == null);
     final url = Uri.https(
@@ -23,10 +24,7 @@ class UnsplashApiClient {
       '/photos/random',
       params,
     );
-    final response = await this.httpClient.get(
-      url,
-      headers: {HttpHeaders.authorizationHeader: 'Client-ID $_clientId'},
-    );
+    final response = await this.httpClient.get(url, headers: headers);
 
     if (response.statusCode != 200) {
       throw new Exception('error ${response.statusCode}: ${response.body}');

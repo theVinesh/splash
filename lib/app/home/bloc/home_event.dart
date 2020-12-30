@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 
-abstract class AppEvent extends Equatable {
-  const AppEvent();
+abstract class HomeEvent extends Equatable {
+  const HomeEvent();
 }
 
-class FetchPhotos extends AppEvent {
+class FetchPhotos extends HomeEvent {
   const FetchPhotos();
 
   @override
